@@ -7,13 +7,13 @@ local function callback_reply(extra, success, result)
 	elseif is_sudo(result) then
 		userrank = "Sudo ⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/sudo.webp", ok_cb, false)
-	elseif is_admin2(result.from.id) then
+	elseif is_admin1(result.from.id) then
 		userrank = "Admin ⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/admin.webp", ok_cb, false)
-	elseif is_owner2(result.from.id, result.to.id) then
+	elseif is_owner(result.from.id, result.to.id) then
 		userrank = "Leader ⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/leader.webp", ok_cb, false)
-	elseif is_momod2(result.from.id, result.to.id) then
+	elseif is_momod(result.from.id, result.to.id) then
 		userrank = "Moderator ⭐"
 		send_document(org_chat_id,"umbrella/stickers/mod.webp", ok_cb, false)
 	elseif tonumber(result.from.id) == tonumber(our_id) then
@@ -22,11 +22,11 @@ local function callback_reply(extra, success, result)
 	elseif result.from.username then
 		if string.sub(result.from.username:lower(), -3) == "bot" then
 			userrank = "API Bot"
-			send_document(org_chat_id,"umbrella/stickers/api.webp", ok_cb, false)
+			send_document(org_chat_id,"umbrella/stickers/apt.webp", ok_cb, false)
 		end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
-	local file = io.open("./setrank/"..result.from.id..".txt", "r")
+	local file = io.open("./info/"..result.from.id..".txt", "r")
 	if file ~= nil then
 		usertype = file:read("*all")
 	else
@@ -86,7 +86,7 @@ local function callback_reply(extra, success, result)
 				elseif string.sub(result.from.phone, 0,4) == '9892' then
 					number = number.."\nSimCard: other"
 				else
-					number = number.."\nنوع سیمکارت: سایر"
+					number = number.."\nSimCard: other"
 				end
 			else
 				number = number.."\nLocation: other\nSimCard: other"
@@ -113,7 +113,7 @@ end
 
 local function callback_res(extra, success, result)
 	if success == 0 then
-		return send_large_msg(org_chat_id, "cannot find this username")
+		return send_large_msg(org_chat_id, "یوزرنیم وارد شده اشتباه است")
 	end
 	--icon & rank ------------------------------------------------------------------------------------------------
 	if tonumber(result.id) == 122774063 then
@@ -122,13 +122,13 @@ local function callback_res(extra, success, result)
 	elseif is_sudo(result) then
 		userrank = "Sudo ⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/sudo.webp", ok_cb, false)
-	elseif is_admin2(result.id) then
+	elseif is_admin1(result.id) then
 		userrank = "Admin ⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/admin.webp", ok_cb, false)
-	elseif is_owner2(result.id, extra.chat2) then
+	elseif is_owner(result.id, extra.chat2) then
 		userrank = "Leader ⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/leader.webp", ok_cb, false)
-	elseif is_momod2(result.id, extra.chat2) then
+	elseif is_momod(result.id, extra.chat2) then
 		userrank = "Moderator ⭐"
 		send_document(org_chat_id,"umbrella/stickers/mod.webp", ok_cb, false)
 	elseif tonumber(result.id) == tonumber(our_id) then
@@ -143,7 +143,7 @@ local function callback_res(extra, success, result)
 	end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
-	local file = io.open("./setrank/"..result.id..".txt", "r")
+	local file = io.open("./info/"..result.id..".txt", "r")
 	if file ~= nil then
 		usertype = file:read("*all")
 	else
@@ -219,9 +219,10 @@ local function callback_res(extra, success, result)
 	send_large_msg(org_chat_id, info)
 end
 
+
 local function callback_info(extra, success, result)
 	if success == 0 then
-		return send_large_msg(org_chat_id, "cannot find this id")
+		return send_large_msg(org_chat_id, "آی دی وارد شده اشتباه است")
 	end
 	--icon & rank ------------------------------------------------------------------------------------------------
 	if tonumber(result.id) == 122774063 then
@@ -230,13 +231,13 @@ local function callback_info(extra, success, result)
 	elseif is_sudo(result) then
 		userrank = "Sudo ⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/sudo.webp", ok_cb, false)
-	elseif is_admin2(result.id) then
+	elseif is_admin1(result.id) then
 		userrank = "Admin ⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/admin.webp", ok_cb, false)
-	elseif is_owner2(result.id, extra.chat2) then
+	elseif is_owner(result.id, extra.chat2) then
 		userrank = "Leader ⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/leader.webp", ok_cb, false)
-	elseif is_momod2(result.id, extra.chat2) then
+	elseif is_momod(result.id, extra.chat2) then
 		userrank = "Moderator ⭐"
 		send_document(org_chat_id,"umbrella/stickers/mod.webp", ok_cb, false)
 	elseif tonumber(result.id) == tonumber(our_id) then
@@ -251,7 +252,7 @@ local function callback_info(extra, success, result)
 	end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
-	local file = io.open("./setrank/"..result.id..".txt", "r")
+	local file = io.open("./info/"..result.id..".txt", "r")
 	if file ~= nil then
 		usertype = file:read("*all")
 	else
@@ -321,7 +322,7 @@ local function callback_info(extra, success, result)
          local text = jdat.FAdate
          return reply_msg(msg.id, text, ok_cb, false)
          end
-        --name ------------------------------------------------------------------------------------------------
+	--name ------------------------------------------------------------------------------------------------
 	if result.first_name then
 		if string.len(result.first_name) > 15 then
 			firstname = string.sub(result.first_name, 0,15).."..."
@@ -343,13 +344,16 @@ local function callback_info(extra, success, result)
 	--info ------------------------------------------------------------------------------------------------
 	info = "First name: "..(result.first_name or "-----").."\n"
 	.."Last name: "..(result.last_name or "-----").."\n\n"
-	.."Username: @"..(msg.from.username or "-----").."\n"
+	.."Username: @"..(result.username or "-----").."\n"
 	.."Phone number: "..number.."\n"
-	.."Global Rank: "..usergrank.."\n"
-        .."Rank: "..usertype.."\n"
+	.."Date: "..time.."\n\n"
+        .."ID: "..result.id.."\n\n"
+        .."Global Rank: "..usergrank.."\n"
+	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
+
 
 local function run(msg, matches)
 	local data = load_data(_config.moderation.data)
@@ -378,7 +382,6 @@ local function run(msg, matches)
 			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
 		end
 	else
-                end
 		--custom rank ------------------------------------------------------------------------------------------------
 		local file = io.open("./info/"..msg.from.id..".txt", "r")
 		if file ~= nil then
@@ -386,6 +389,13 @@ local function run(msg, matches)
 		else
 			usertype = "-----"
 		end
+                --custom grank ------------------------------------------------------------------------------------------------
+            	local file = io.open("./setgrank/"..result.id..".txt", "r")
+          	if file ~= nil then
+		usergrank = file:read("*all")
+	        else
+		usergrank = "-----"
+	        end
 			--contor ------------------------------------------------------------------------------------------------
 			local user_info = {}
 			local uhash = 'user:'..msg.from.id
@@ -399,7 +409,7 @@ local function run(msg, matches)
 			elseif is_sudo(msg) then
 				userrank = "Sudo ⭐⭐⭐⭐⭐"
 				send_document("chat#id"..msg.to.id,"umbrella/stickers/sudo.webp", ok_cb, false)
-			elseif is_admin(msg) then
+			elseif is_admin1(msg) then
 				userrank = "Admin ⭐⭐⭐"
 				send_document("chat#id"..msg.to.id,"umbrella/stickers/admin.webp", ok_cb, false)
 			elseif is_owner(msg) then
@@ -472,11 +482,11 @@ return {
 			},
 		},
 	patterns = {
-		"^(/rankdel) (.*)$",
-		"^(/setrank) ([^%s]+) (.*)$",
-                "^(/setgrank) ([^%s]+) (.*)$",
+		"^(/infodel) (.*)$",
+		"^(/info) ([^%s]+) (.*)$",
 		"^([Ii]nfo) (.*)$",
 		"^(info)$",
 		"^(Info)$",
 	},
 	run = run,
+}
