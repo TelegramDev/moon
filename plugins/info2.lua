@@ -378,6 +378,7 @@ local function run(msg, matches)
 			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
 		end
 	else
+                end
 		--custom rank ------------------------------------------------------------------------------------------------
 		local file = io.open("./info/"..msg.from.id..".txt", "r")
 		if file ~= nil then
