@@ -347,10 +347,12 @@ local function run(msg, matches)
 		file:flush()
 		file:close() 
 		return "مقام ثبت شد"
+                end
 	elseif #matches == 2 then
 		local cbres_extra = {chatid = msg.to.id}
 		if string.match(matches[2], '^%d+$') then
 			return user_info('user#id'..matches[2], callback_info, cbres_extra)
+                end
 		else
 			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
 		end
