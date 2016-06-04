@@ -530,7 +530,7 @@ local function run(msg, matches)
 					.."Interface: "..hardware.."\n"
 					.."Total messages: "..user_info.msgs.."\n\n"
 					.."Group name: "..string.gsub(msg.to.print_name, "_", " ").."\n"
-					.."Group ID: "..msg.to.id
+					.."Group ID: "..msg.to.id.."\n\nT E L E M O O N"
 			return info
 		else
 			get_message(msg.reply_id, callback_reply, false)
