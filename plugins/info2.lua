@@ -167,6 +167,7 @@ local function callback_reply(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Username: @"..(result.from.username or "-----").."\n"
 	.."ID: "..result.from.id.."\n\n"
+        .."Date: "..time.."\n"
         .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
@@ -280,6 +281,7 @@ local function callback_res(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Username: @"..(result.username or "-----").."\n"
 	.."ID: "..result.id.."\n\n"
+        .."Date: "..time.."\n"
         .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
@@ -406,6 +408,13 @@ local function callback_info(extra, success, result)
 	else
 		lastname = "-----"
 	end
+        --date ------------------------------------------------------------------------------------------------
+        function run(msg, matches)
+        local url , res = http.request('http://api.gpmod.ir/time/')
+        local jdat = json:decode(url)
+        local text = jdat.FAdate
+        return (msg.id, text, ok_cb, false)
+        end
 	--info ------------------------------------------------------------------------------------------------
 	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
 	.."First name: "..(result.first_name or "-----").."\n"
@@ -524,6 +533,7 @@ local function run(msg, matches)
 					.."Phone number: "..number.."\n"
 					.."Username: @"..(msg.from.username or "-----").."\n"
 					.."ID: "..msg.from.id.."\n\n"
+                                        .."Date: "..time.."\n"
                                         .."Global Rank: "..usergrank.."\n"
 					.."Rank: "..usertype.."\n"
 					.."Position: "..userrank.."\n\n"
