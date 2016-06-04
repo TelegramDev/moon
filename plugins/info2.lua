@@ -447,7 +447,7 @@ local function run(msg, matches)
 		end
 	else
                 --ginfo ------------------------------------------------------------------------------------------------
-	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
+	rank = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
 	.."First name: "..(result.first_name or "-----").."\n"
 	.."Last name: "..(result.last_name or "-----").."\n\n"
 	.."Phone number: "..number.."\n"
