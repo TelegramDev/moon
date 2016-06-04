@@ -365,7 +365,7 @@ local function run(msg, matches)
 	end
 	if matches[1] == '/infodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
-		return 'was removed from his rank'
+		return 'از مقام خود عزل شد'
 	elseif matches[1] == '/info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
@@ -373,7 +373,7 @@ local function run(msg, matches)
 		file:write(text)
 		file:flush()
 		file:close() 
-		return "done"
+		return "مقام ثبت شد"
 	elseif #matches == 2 then
 		local cbres_extra = {chatid = msg.to.id}
 		if string.match(matches[2], '^%d+$') then
