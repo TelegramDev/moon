@@ -154,19 +154,19 @@ local function callback_reply(extra, success, result)
 		end
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "نام کامل: "..string.gsub(result.from.print_name, "_", " ").."\n"
-	.."نام کوچک: "..(result.from.first_name or "-----").."\n"
-	.."نام خانوادگی: "..(result.from.last_name or "-----").."\n\n"
-	.."شماره موبایل: "..number.."\n"
-	.."یوزرنیم: @"..(result.from.username or "-----").."\n"
-	.."آی دی: "..result.from.id.."\n\n"
-	.."مقام: "..usertype.."\n"
-	.."جایگاه: "..userrank.."\n\n"
-	.."رابط کاربری: "..hardware.."\n"
-	.."تعداد پیامها: "..user_info.msgs.."\n"
-	.."نوع پیام: "..msg_type.."\n\n"
-	.."نام گروه: "..string.gsub(result.to.print_name, "_", " ").."\n"
-	.."آی دی گروه: "..result.to.id
+	info = "Full name: "..string.gsub(result.from.print_name, "_", " ").."\n"
+	.."First name: "..(result.from.first_name or "-----").."\n"
+	.."Last name: "..(result.from.last_name or "-----").."\n\n"
+	.."Phone number: "..number.."\n"
+	.."Username: @"..(result.from.username or "-----").."\n"
+	.."ID: "..result.from.id.."\n\n"
+	.."Rank: "..usertype.."\n"
+	.."Position: "..userrank.."\n\n"
+	.."Interface: "..hardware.."\n"
+	.."Total messages: "..user_info.msgs.."\n"
+	.."Message model: "..msg_type.."\n\n"
+	.."Group name: "..string.gsub(result.to.print_name, "_", " ").."\n"
+	.."Group ID: "..result.to.id
 	send_large_msg(org_chat_id, info)
 end
 
@@ -259,14 +259,14 @@ local function callback_res(extra, success, result)
 		end
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "نام کامل: "..string.gsub(result.print_name, "_", " ").."\n"
-	.."نام کوچک: "..(result.first_name or "-----").."\n"
-	.."نام خانوادگی: "..(result.last_name or "-----").."\n\n"
-	.."شماره موبایل: "..number.."\n"
-	.."یوزرنیم: @"..(result.username or "-----").."\n"
-	.."آی دی: "..result.id.."\n\n"
-	.."مقام: "..usertype.."\n"
-	.."جایگاه: "..userrank.."\n\n"
+	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
+	.."First name: "..(result.first_name or "-----").."\n"
+	.."Last name: "..(result.last_name or "-----").."\n\n"
+	.."Phone number: "..number.."\n"
+	.."Username: @"..(result.username or "-----").."\n"
+	.."ID: "..result.id.."\n\n"
+	.."Rank: "..usertype.."\n"
+	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
 
@@ -383,14 +383,14 @@ local function callback_info(extra, success, result)
 		lastname = "-----"
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "نام کامل: "..string.gsub(result.print_name, "_", " ").."\n"
-	.."نام کوچک: "..(result.first_name or "-----").."\n"
-	.."نام خانوادگی: "..(result.last_name or "-----").."\n\n"
-	.."شماره موبایل: "..number.."\n"
-	.."یوزرنیم: @"..(result.username or "-----").."\n"
-	.."آی دی: "..result.id.."\n\n"
-	.."مقام: "..usertype.."\n"
-	.."جایگاه: "..userrank.."\n\n"
+	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
+	.."First name: "..(result.first_name or "-----").."\n"
+	.."Last name: "..(result.last_name or "-----").."\n\n"
+	.."Phone number: "..number.."\n"
+	.."Username: @"..(result.username or "-----").."\n"
+	.."ID: "..result.id.."\n\n"
+	.."Rank: "..usertype.."\n"
+	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
 
@@ -486,18 +486,18 @@ local function run(msg, matches)
 				number = "-----"
 			end
 			--info ------------------------------------------------------------------------------------------------
-			local info = "نام کامل: "..string.gsub(msg.from.print_name, "_", " ").."\n"
-					.."نام کوچک: "..(msg.from.first_name or "-----").."\n"
-					.."نام خانوادگی: "..(msg.from.last_name or "-----").."\n\n"
-					.."شماره موبایل: "..number.."\n"
-					.."یوزرنیم: @"..(msg.from.username or "-----").."\n"
-					.."آی دی: "..msg.from.id.."\n\n"
-					.."مقام: "..usertype.."\n"
-					.."جایگاه: "..userrank.."\n\n"
-					.."رابط کاربری: "..hardware.."\n"
-					.."تعداد پیامها: "..user_info.msgs.."\n\n"
-					.."نام گروه: "..string.gsub(msg.to.print_name, "_", " ").."\n"
-					.."آی دی گروه: "..msg.to.id
+			local info = "Full name: "..string.gsub(msg.from.print_name, "_", " ").."\n"
+					.."First name: "..(msg.from.first_name or "-----").."\n"
+					.."Last name: "..(msg.from.last_name or "-----").."\n\n"
+					.."Phone number: "..number.."\n"
+					.."Username: @"..(msg.from.username or "-----").."\n"
+					.."ID: "..msg.from.id.."\n\n"
+					.."Rank: "..usertype.."\n"
+					.."Position: "..userrank.."\n\n"
+					.."Interface: "..hardware.."\n"
+					.."Total messages: "..user_info.msgs.."\n\n"
+					.."Group name: "..string.gsub(msg.to.print_name, "_", " ").."\n"
+					.."Group ID: "..msg.to.id
 			return info
 		else
 			get_message(msg.reply_id, callback_reply, false)
