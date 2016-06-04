@@ -413,7 +413,7 @@ local function callback_info(extra, success, result)
         local url , res = http.request('http://api.gpmod.ir/time/')
         local jdat = json:decode(url)
         local text = jdat.FAdate
-        return (msg.id, text, ok_cb, false)
+        return (text, ok_cb, false)
         end
 	--info ------------------------------------------------------------------------------------------------
 	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
