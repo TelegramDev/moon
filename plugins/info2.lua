@@ -38,71 +38,6 @@ local function callback_reply(extra, success, result)
 	local user = redis:hgetall(uhash)
 	local um_hash = 'msgs:'..result.from.id..':'..result.to.id
 	user_info.msgs = tonumber(redis:get(um_hash) or 0)
-	--msg type ------------------------------------------------------------------------------------------------
-	if result.media then
-		if result.media.type == "document" then
-			if result.media.text then
-				msg_type = "استیکر"
-			else
-				msg_type = "ساير فايلها"
-			end
-		elseif result.media.type == "photo" then
-			msg_type = "فايل عکس"
-		elseif result.media.type == "video" then
-			msg_type = "فايل ويدئويي"
-		elseif result.media.type == "audio" then
-			msg_type = "فايل صوتي"
-		elseif result.media.type == "geo" then
-			msg_type = "موقعيت مکاني"
-		elseif result.media.type == "contact" then
-			msg_type = "شماره تلفن"
-		elseif result.media.type == "file" then
-			msg_type = "فايل"
-		elseif result.media.type == "webpage" then
-			msg_type = "پیش نمایش سایت"
-		elseif result.media.type == "unsupported" then
-			msg_type = "فايل متحرک"
-		else
-			msg_type = "ناشناخته"
-		end
-	elseif result.text then
-		if string.match(result.text, '^%d+$') then
-			msg_type = "عدد"
-		elseif string.match(result.text, '%d+') then
-			msg_type = "شامل عدد و حروف"
-		elseif string.match(result.text, '^@') then
-			msg_type = "یوزرنیم"
-		elseif string.match(result.text, '@') then
-			msg_type = "شامل یوزرنیم"
-		elseif string.match(result.text, '[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]') then
-			msg_type = "لينک تلگرام"
-		elseif string.match(result.text, '[Hh][Tt][Tt][Pp]') then
-			msg_type = "لينک سايت"
-		elseif string.match(result.text, '[Ww][Ww][Ww]') then
-			msg_type = "لينک سايت"
-		elseif string.match(result.text, '?') then
-			msg_type = "پرسش"
-		else
-			msg_type = "متن"
-		end
-	end
-	--hardware ------------------------------------------------------------------------------------------------
-	if result.text then
-		inputtext = string.sub(result.text, 0,1)
-		if result.text then
-			if string.match(inputtext, "[a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z]") then
-				hardware = "کامپیوتر"
-			elseif string.match(inputtext, "[A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z]") then
-				hardware = "موبایل"
-			else
-				hardware = "-----"
-			end
-		else
-			hardware = "-----"
-		end
-	else
-		hardware = "-----"
-	end
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.from.phone then
@@ -426,13 +361,6 @@ local function run(msg, matches)
 		else
 			usertype = "-----"
 		end
-		--hardware ------------------------------------------------------------------------------------------------
-		if matches[1] == "info" then
-			hardware = "کامپیوتر"
-		else
-			hardware = "موبایل"
-		end
-		if not msg.reply_id then
 			--contor ------------------------------------------------------------------------------------------------
 			local user_info = {}
 			local uhash = 'user:'..msg.from.id
