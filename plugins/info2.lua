@@ -102,9 +102,9 @@ local function callback_reply(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Date: "..time.."\n\n"
         .."ID: "..result.from.id.."\n\n"
-        .."Global Rank: "..userrank.."\n"
+        .."Global Rank: "..usergrank.."\n"
         .."Rank: "..usertype.."\n"
-	.."Position: "..userrank.."\n\n
+	.."Position: "..userrank.."\n\n"
 	.."Total messages: "..user_info.msgs.."\n"
 	.."Group name: "..string.gsub(result.to.print_name, "_", " ").."\n"
 	.."Group ID: "..result.to.id
@@ -213,7 +213,7 @@ local function callback_res(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Date: "..time.."\n\n"
         .."ID: "..result.id.."\n\n"
-        .."Global Rank: "..userrank.."\n"
+        .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
@@ -470,7 +470,7 @@ local function run(msg, matches)
 					.."Phone number: "..number.."\n"
                                         .."Date: "..time.."\n\n"
                                         .."ID: "..msg.from.id.."\n\n"
-                                        .."Global Rank: "..userrank.."\n"
+                                        .."Global Rank: "..usergrank.."\n"
 					.."Rank: "..usertype.."\n"
 					.."Position: "..userrank.."\n\n"
 					.."Total messages: "..user_info.msgs.."\n\n"
