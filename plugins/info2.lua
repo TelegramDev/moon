@@ -378,34 +378,6 @@ local function run(msg, matches)
 			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
 		end
 	else
-        --info2 ----------------------------------------------------------------------------
-        local function run(msg, matches)
-	local data = load_data(_config.moderation.data)
-	org_chat_id = "chat#id"..msg.to.id
-	if is_sudo(msg) then
-		access = 1
-	else
-		access = 0
-	end
-	if matches[1] == '/grankdel' and is_sudo(msg) then
-		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
-		return 'was removed from his grank'
-	elseif matches[1] == '/info' and is_sudo(msg) then
-		local name = string.sub(matches[2], 1, 50)
-		local text = string.sub(matches[3], 1, 10000000000)
-		local file = io.open("./setgrank/"..name..".txt", "w")
-		file:write(text)
-		file:flush()
-		file:close() 
-		return "done"
-	elseif #matches == 2 then
-		local cbres_extra = {chatid = msg.to.id}
-		if string.match(matches[2], '^%d+$') then
-			return user_info('user#id'..matches[2], callback_info, cbres_extra)
-		else
-			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
-		end
-	else
 		--custom rank ------------------------------------------------------------------------------------------------
 		local file = io.open("./info/"..msg.from.id..".txt", "r")
 		if file ~= nil then
@@ -500,7 +472,6 @@ return {
 		},
 	patterns = {
 		"^(/rankdel) (.*)$",
-                "^(/grankdel) (.*)$",
 		"^(/setrank) ([^%s]+) (.*)$",
                 "^(/setgrank) ([^%s]+) (.*)$",
 		"^([Ii]nfo) (.*)$",
