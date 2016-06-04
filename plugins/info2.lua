@@ -33,7 +33,7 @@ local function callback_reply(extra, success, result)
 		usertype = "-----"
 	end
         --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		local file = io.open("./rank/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -217,7 +217,7 @@ local function callback_res(extra, success, result)
 		usertype = "-----"
 	end
         --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		local file = io.open("./rank/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -325,7 +325,7 @@ local function callback_info(extra, success, result)
 		usertype = "-----"
 	end
         --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		local file = io.open("./rank/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -454,7 +454,7 @@ local function run(msg, matches)
 			usertype = "-----"
 		end
                 --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		local file = io.open("./rank/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -556,7 +556,7 @@ return {
 	patterns = {
 		"^(/infodel) (.*)$",
 		"^(/info) ([^%s]+) (.*)$",
-                "^(!ginfo) ([^%s]+) (.*)$",
+                "^(/ginfo) ([^%s]+) (.*)$",
 		"^([Ii]nfo) (.*)$",
 		"^(info)$",
 		"^(Info)$",
