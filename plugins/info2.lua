@@ -38,6 +38,71 @@ local function callback_reply(extra, success, result)
 	local user = redis:hgetall(uhash)
 	local um_hash = 'msgs:'..result.from.id..':'..result.to.id
 	user_info.msgs = tonumber(redis:get(um_hash) or 0)
+	--msg type ------------------------------------------------------------------------------------------------
+	if result.media then
+		if result.media.type == "document" then
+			if result.media.text then
+				msg_type = "استیکر"
+			else
+				msg_type = "ساير فايلها"
+			end
+		elseif result.media.type == "photo" then
+			msg_type = "فايل عکس"
+		elseif result.media.type == "video" then
+			msg_type = "فايل ويدئويي"
+		elseif result.media.type == "audio" then
+			msg_type = "فايل صوتي"
+		elseif result.media.type == "geo" then
+			msg_type = "موقعيت مکاني"
+		elseif result.media.type == "contact" then
+			msg_type = "شماره تلفن"
+		elseif result.media.type == "file" then
+			msg_type = "فايل"
+		elseif result.media.type == "webpage" then
+			msg_type = "پیش نمایش سایت"
+		elseif result.media.type == "unsupported" then
+			msg_type = "فايل متحرک"
+		else
+			msg_type = "ناشناخته"
+		end
+	elseif result.text then
+		if string.match(result.text, '^%d+$') then
+			msg_type = "عدد"
+		elseif string.match(result.text, '%d+') then
+			msg_type = "شامل عدد و حروف"
+		elseif string.match(result.text, '^@') then
+			msg_type = "یوزرنیم"
+		elseif string.match(result.text, '@') then
+			msg_type = "شامل یوزرنیم"
+		elseif string.match(result.text, '[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]') then
+			msg_type = "لينک تلگرام"
+		elseif string.match(result.text, '[Hh][Tt][Tt][Pp]') then
+			msg_type = "لينک سايت"
+		elseif string.match(result.text, '[Ww][Ww][Ww]') then
+			msg_type = "لينک سايت"
+		elseif string.match(result.text, '?') then
+			msg_type = "پرسش"
+		else
+			msg_type = "متن"
+		end
+	end
+	--hardware ------------------------------------------------------------------------------------------------
+	if result.text then
+		inputtext = string.sub(result.text, 0,1)
+		if result.text then
+			if string.match(inputtext, "[a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z]") then
+				hardware = "کامپیوتر"
+			elseif string.match(inputtext, "[A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z]") then
+				hardware = "موبایل"
+			else
+				hardware = "-----"
+			end
+		else
+			hardware = "-----"
+		end
+	else
+		hardware = "-----"
+	end
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.from.phone then
@@ -89,23 +154,25 @@ local function callback_reply(extra, success, result)
 		end
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "First name: "..(result.from.first_name or "-----").."\n"
-	.."Last name: "..(result.from.last_name or "-----").."\n\n"
-	.."Username: @"..(msg.from.username or "-----").."\n"
-	.."Phone number: "..number.."\n"
-        .."ID: "..result.from.id.."\n\n"
-        .."Global Rank: "..usergrank.."\n"
-        .."Rank: "..usertype.."\n"
-	.."Position: "..userrank.."\n\n"
-	.."Total messages: "..user_info.msgs.."\n"
-	.."Group name: "..string.gsub(result.to.print_name, "_", " ").."\n"
-	.."Group ID: "..result.to.id
+	info = "نام کامل: "..string.gsub(result.from.print_name, "_", " ").."\n"
+	.."نام کوچک: "..(result.from.first_name or "-----").."\n"
+	.."نام خانوادگی: "..(result.from.last_name or "-----").."\n\n"
+	.."شماره موبایل: "..number.."\n"
+	.."یوزرنیم: @"..(result.from.username or "-----").."\n"
+	.."آی دی: "..result.from.id.."\n\n"
+	.."مقام: "..usertype.."\n"
+	.."جایگاه: "..userrank.."\n\n"
+	.."رابط کاربری: "..hardware.."\n"
+	.."تعداد پیامها: "..user_info.msgs.."\n"
+	.."نوع پیام: "..msg_type.."\n\n"
+	.."نام گروه: "..string.gsub(result.to.print_name, "_", " ").."\n"
+	.."آی دی گروه: "..result.to.id
 	send_large_msg(org_chat_id, info)
 end
 
 local function callback_res(extra, success, result)
 	if success == 0 then
-		return send_large_msg(org_chat_id, "cannot find username")
+		return send_large_msg(org_chat_id, "یوزرنیم وارد شده اشتباه است")
 	end
 	--icon & rank ------------------------------------------------------------------------------------------------
 	if tonumber(result.id) == 122774063 then
@@ -192,14 +259,14 @@ local function callback_res(extra, success, result)
 		end
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "First name: "..(result.first_name or "-----").."\n"
-	.."Last name: "..(result.last_name or "-----").."\n\n"
-	.."Username: @"..(result.username or "-----").."\n"
-	.."Phone number: "..number.."\n"
-        .."ID: "..result.id.."\n\n"
-        .."Global Rank: "..usergrank.."\n"
-	.."Rank: "..usertype.."\n"
-	.."Position: "..userrank.."\n\n"
+	info = "نام کامل: "..string.gsub(result.print_name, "_", " ").."\n"
+	.."نام کوچک: "..(result.first_name or "-----").."\n"
+	.."نام خانوادگی: "..(result.last_name or "-----").."\n\n"
+	.."شماره موبایل: "..number.."\n"
+	.."یوزرنیم: @"..(result.username or "-----").."\n"
+	.."آی دی: "..result.id.."\n\n"
+	.."مقام: "..usertype.."\n"
+	.."جایگاه: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
 
@@ -316,14 +383,14 @@ local function callback_info(extra, success, result)
 		lastname = "-----"
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "First name: "..(result.first_name or "-----").."\n"
-	.."Last name: "..(result.last_name or "-----").."\n\n"
-	.."Username: @"..(result.username or "-----").."\n"
-	.."Phone number: "..number.."\n"
-        .."ID: "..result.id.."\n\n"
-        .."Global Rank: "..usergrank.."\n"
-	.."Rank: "..usertype.."\n"
-	.."Position: "..userrank.."\n\n"
+	info = "نام کامل: "..string.gsub(result.print_name, "_", " ").."\n"
+	.."نام کوچک: "..(result.first_name or "-----").."\n"
+	.."نام خانوادگی: "..(result.last_name or "-----").."\n\n"
+	.."شماره موبایل: "..number.."\n"
+	.."یوزرنیم: @"..(result.username or "-----").."\n"
+	.."آی دی: "..result.id.."\n\n"
+	.."مقام: "..usertype.."\n"
+	.."جایگاه: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
 
@@ -337,8 +404,7 @@ local function run(msg, matches)
 	end
 	if matches[1] == '/infodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
-		return 'از مقام خود عزل شد'
-                end
+		return 'done'
 	elseif matches[1] == '/info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
@@ -346,8 +412,7 @@ local function run(msg, matches)
 		file:write(text)
 		file:flush()
 		file:close() 
-		return "مقام ثبت شد"
-                end
+		return "done"
 	elseif #matches == 2 then
 		local cbres_extra = {chatid = msg.to.id}
 		if string.match(matches[2], '^%d+$') then
@@ -363,6 +428,13 @@ local function run(msg, matches)
 		else
 			usertype = "-----"
 		end
+		--hardware ------------------------------------------------------------------------------------------------
+		if matches[1] == "info" then
+			hardware = "pc"
+		else
+			hardware = "phone"
+		end
+		if not msg.reply_id then
 			--contor ------------------------------------------------------------------------------------------------
 			local user_info = {}
 			local uhash = 'user:'..msg.from.id
@@ -414,18 +486,18 @@ local function run(msg, matches)
 				number = "-----"
 			end
 			--info ------------------------------------------------------------------------------------------------
-			local info = "First name: "..(msg.from.first_name or "-----").."\n"
-					.."Last name: "..(msg.from.last_name or "-----").."\n\n"
-					.."Username: @"..(msg.from.username or "-----").."\n"
-					.."Phone number: "..number.."\n"
-                                        .."ID: "..msg.from.id.."\n\n"
-                                        .."Global Rank: "..usergrank.."\n"
-					.."Rank: "..usertype.."\n"
-					.."Position: "..userrank.."\n\n"
-					.."Total messages: "..user_info.msgs.."\n\n"
-					.."Group name: "..string.gsub(msg.to.print_name, "_", " ").."\n"
-					.."Group ID: "..msg.to.id
-			return info
+			local info = "نام کامل: "..string.gsub(msg.from.print_name, "_", " ").."\n"
+					.."نام کوچک: "..(msg.from.first_name or "-----").."\n"
+					.."نام خانوادگی: "..(msg.from.last_name or "-----").."\n\n"
+					.."شماره موبایل: "..number.."\n"
+					.."یوزرنیم: @"..(msg.from.username or "-----").."\n"
+					.."آی دی: "..msg.from.id.."\n\n"
+					.."مقام: "..usertype.."\n"
+					.."جایگاه: "..userrank.."\n\n"
+					.."رابط کاربری: "..hardware.."\n"
+					.."تعداد پیامها: "..user_info.msgs.."\n\n"
+					.."نام گروه: "..string.gsub(msg.to.print_name, "_", " ").."\n"
+					.."آی دی گروه: "..msg.to.id
 			return info
 		else
 			get_message(msg.reply_id, callback_reply, false)
