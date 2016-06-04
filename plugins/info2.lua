@@ -495,7 +495,7 @@ local function run(msg, matches)
 			--number ------------------------------------------------------------------------------------------------
 			if msg.from.phone then
 				numberorg = string.sub(msg.from.phone, 3)
-				number = "0*****"..string.sub(numberorg, 0,6)
+				number = "*****"..string.sub(numberorg, 0,6)
 				if string.sub(msg.from.phone, 0,2) == '98' then
 					number = number.."\nLocation: Iran Islamic"
 					if string.sub(msg.from.phone, 0,4) == '9891' then
