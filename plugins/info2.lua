@@ -495,7 +495,8 @@ local function run(msg, matches)
 					.."Rank: "..usertype.."\n"
 					.."Position: "..userrank.."\n\n"
 					.."Interface: "..hardware.."\n"
-					.."Total messages: "..user_info.msgs.."\n\n"
+					.."Total messages: "..user_info.msgs.."\n"
+                                        .."Message model: "..msg_type.."\n\n"
 					.."Group name: "..string.gsub(msg.to.print_name, "_", " ").."\n"
 					.."Group ID: "..msg.to.id
 			return info
