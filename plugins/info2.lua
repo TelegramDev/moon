@@ -32,6 +32,13 @@ local function callback_reply(extra, success, result)
 	else
 		usertype = "-----"
 	end
+        --custom grank ------------------------------------------------------------------------------------------------
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		if file ~= nil then
+			usergrank = file:read("*all")
+		else
+			usergrank = "-----"
+		end
 	--cont ------------------------------------------------------------------------------------------------
 	local user_info = {}
 	local uhash = 'user:'..result.from.id
@@ -160,6 +167,7 @@ local function callback_reply(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Username: @"..(result.from.username or "-----").."\n"
 	.."ID: "..result.from.id.."\n\n"
+        .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
 	.."Interface: "..hardware.."\n"
@@ -208,6 +216,13 @@ local function callback_res(extra, success, result)
 	else
 		usertype = "-----"
 	end
+        --custom grank ------------------------------------------------------------------------------------------------
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		if file ~= nil then
+			usergrank = file:read("*all")
+		else
+			usergrank = "-----"
+		end
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.phone then
@@ -265,6 +280,7 @@ local function callback_res(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Username: @"..(result.username or "-----").."\n"
 	.."ID: "..result.id.."\n\n"
+        .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
@@ -308,6 +324,14 @@ local function callback_info(extra, success, result)
 	else
 		usertype = "-----"
 	end
+        --custom grank ------------------------------------------------------------------------------------------------
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		if file ~= nil then
+			usergrank = file:read("*all")
+		else
+			usergrank = "-----"
+		end
+
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.phone then
@@ -389,6 +413,7 @@ local function callback_info(extra, success, result)
 	.."Phone number: "..number.."\n"
 	.."Username: @"..(result.username or "-----").."\n"
 	.."ID: "..result.id.."\n\n"
+        .."Global Rank "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
@@ -427,6 +452,13 @@ local function run(msg, matches)
 			usertype = file:read("*all")
 		else
 			usertype = "-----"
+		end
+                --custom grank ------------------------------------------------------------------------------------------------
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
+		if file ~= nil then
+			usergrank = file:read("*all")
+		else
+			usergrank = "-----"
 		end
 		--hardware ------------------------------------------------------------------------------------------------
 		if matches[1] == "info" then
@@ -492,6 +524,7 @@ local function run(msg, matches)
 					.."Phone number: "..number.."\n"
 					.."Username: @"..(msg.from.username or "-----").."\n"
 					.."ID: "..msg.from.id.."\n\n"
+                                        .."Global Rank: "..usergrank.."\n"
 					.."Rank: "..usertype.."\n"
 					.."Position: "..userrank.."\n\n"
 					.."Interface: "..hardware.."\n"
@@ -523,6 +556,7 @@ return {
 	patterns = {
 		"^(/infodel) (.*)$",
 		"^(/info) ([^%s]+) (.*)$",
+                "^(/ginfo) ([^%s]+) (.*)$",
 		"^([Ii]nfo) (.*)$",
 		"^(info)$",
 		"^(Info)$",
