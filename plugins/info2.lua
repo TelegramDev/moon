@@ -26,11 +26,18 @@ local function callback_reply(extra, success, result)
 		end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
-	local file = io.open("./info/"..result.from.id..".txt", "r")
+	local file = io.open("./setrank/"..result.from.id..".txt", "r")
 	if file ~= nil then
 		usertype = file:read("*all")
 	else
 		usertype = "-----"
+	end
+        --custom grank ------------------------------------------------------------------------------------------------
+	local file = io.open("./setgrank/"..result.id..".txt", "r")
+	if file ~= nil then
+		usergrank = file:read("*all")
+	else
+		usergrank = "-----"
 	end
 	--cont ------------------------------------------------------------------------------------------------
 	local user_info = {}
@@ -136,11 +143,18 @@ local function callback_res(extra, success, result)
 	end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
-	local file = io.open("./info/"..result.id..".txt", "r")
+	local file = io.open("./setrank/"..result.id..".txt", "r")
 	if file ~= nil then
 		usertype = file:read("*all")
 	else
 		usertype = "-----"
+	end
+        --custom grank ------------------------------------------------------------------------------------------------
+	local file = io.open("./setgrank/"..result.id..".txt", "r")
+	if file ~= nil then
+		usergrank = file:read("*all")
+	else
+		usergrank = "-----"
 	end
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
@@ -237,11 +251,18 @@ local function callback_info(extra, success, result)
 	end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
-	local file = io.open("./info/"..result.id..".txt", "r")
+	local file = io.open("./setrank/"..result.id..".txt", "r")
 	if file ~= nil then
 		usertype = file:read("*all")
 	else
 		usertype = "-----"
+	end
+        --custom grank ------------------------------------------------------------------------------------------------
+	local file = io.open("./setgrank/"..result.id..".txt", "r")
+	if file ~= nil then
+		usergrank = file:read("*all")
+	else
+		usergrank = "-----"
 	end
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
@@ -324,7 +345,8 @@ local function callback_info(extra, success, result)
 	.."Last name: "..(result.last_name or "-----").."\n\n"
 	.."Username: @"..(msg.from.username or "-----").."\n"
 	.."Phone number: "..number.."\n"
-	.."Rank: "..usertype.."\n"
+	.."Global Rank: "..usergrank.."\n"
+        .."Rank: "..usertype.."\n"
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
@@ -337,13 +359,41 @@ local function run(msg, matches)
 	else
 		access = 0
 	end
-	if matches[1] == '/infodel' and is_sudo(msg) then
+	if matches[1] == '/rankdel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
 		return 'was removed from his rank'
 	elseif matches[1] == '/info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
-		local file = io.open("./info/"..name..".txt", "w")
+		local file = io.open("./setrank/"..name..".txt", "w")
+		file:write(text)
+		file:flush()
+		file:close() 
+		return "done"
+	elseif #matches == 2 then
+		local cbres_extra = {chatid = msg.to.id}
+		if string.match(matches[2], '^%d+$') then
+			return user_info('user#id'..matches[2], callback_info, cbres_extra)
+		else
+			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
+		end
+	else
+        --info2 ----------------------------------------------------------------------------
+        local function run(msg, matches)
+	local data = load_data(_config.moderation.data)
+	org_chat_id = "chat#id"..msg.to.id
+	if is_sudo(msg) then
+		access = 1
+	else
+		access = 0
+	end
+	if matches[1] == '/grankdel' and is_sudo(msg) then
+		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
+		return 'was removed from his grank'
+	elseif matches[1] == '/info' and is_sudo(msg) then
+		local name = string.sub(matches[2], 1, 50)
+		local text = string.sub(matches[3], 1, 10000000000)
+		local file = io.open("./setgrank/"..name..".txt", "w")
 		file:write(text)
 		file:flush()
 		file:close() 
@@ -449,8 +499,10 @@ return {
 			},
 		},
 	patterns = {
-		"^(/infodel) (.*)$",
-		"^(/info) ([^%s]+) (.*)$",
+		"^(/rankdel) (.*)$",
+                "^(/grankdel) (.*)$",
+		"^(/setrank) ([^%s]+) (.*)$",
+                "^(/setgrank) ([^%s]+) (.*)$",
 		"^([Ii]nfo) (.*)$",
 		"^(info)$",
 		"^(Info)$",
