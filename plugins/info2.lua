@@ -100,7 +100,6 @@ local function callback_reply(extra, success, result)
 	.."Last name: "..(result.from.last_name or "-----").."\n\n"
 	.."Username: @"..(msg.from.username or "-----").."\n"
 	.."Phone number: "..number.."\n"
-	.."Date: "..time.."\n\n"
         .."ID: "..result.from.id.."\n\n"
         .."Global Rank: "..usergrank.."\n"
         .."Rank: "..usertype.."\n"
@@ -211,7 +210,6 @@ local function callback_res(extra, success, result)
 	.."Last name: "..(result.last_name or "-----").."\n\n"
 	.."Username: @"..(result.username or "-----").."\n"
 	.."Phone number: "..number.."\n"
-	.."Date: "..time.."\n\n"
         .."ID: "..result.id.."\n\n"
         .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
@@ -315,13 +313,6 @@ local function callback_info(extra, success, result)
 			number = "-----"
 		end
 	end
-	--date ------------------------------------------------------------------------------------------------
-         function run(msg, matches)
-         local url , res = http.request('http://api.gpmod.ir/time/')
-         local jdat = json:decode(url)
-         local text = jdat.FAdate
-         return reply_msg(msg.id, text, ok_cb, false)
-         end
 	--name ------------------------------------------------------------------------------------------------
 	if result.first_name then
 		if string.len(result.first_name) > 15 then
@@ -346,7 +337,6 @@ local function callback_info(extra, success, result)
 	.."Last name: "..(result.last_name or "-----").."\n\n"
 	.."Username: @"..(result.username or "-----").."\n"
 	.."Phone number: "..number.."\n"
-	.."Date: "..time.."\n\n"
         .."ID: "..result.id.."\n\n"
         .."Global Rank: "..usergrank.."\n"
 	.."Rank: "..usertype.."\n"
@@ -365,8 +355,7 @@ local function run(msg, matches)
 	end
 	if matches[1] == '/infodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
-		return 'از مقام خود عزل شد'
-                end
+		return 'done'
 	elseif matches[1] == '/info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
@@ -374,7 +363,7 @@ local function run(msg, matches)
 		file:write(text)
 		file:flush()
 		file:close() 
-		return "مقام ثبت شد"
+		return "done"
 	elseif #matches == 2 then
 		local cbres_extra = {chatid = msg.to.id}
 		if string.match(matches[2], '^%d+$') then
@@ -452,7 +441,6 @@ local function run(msg, matches)
 					.."Last name: "..(msg.from.last_name or "-----").."\n\n"
 					.."Username: @"..(msg.from.username or "-----").."\n"
 					.."Phone number: "..number.."\n"
-                                        .."Date: "..time.."\n\n"
                                         .."ID: "..msg.from.id.."\n\n"
                                         .."Global Rank: "..usergrank.."\n"
 					.."Rank: "..usertype.."\n"
