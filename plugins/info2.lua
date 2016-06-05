@@ -33,7 +33,7 @@ local function callback_reply(extra, success, result)
 		usertype = "-----"
 	end
         --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./rank/"..msg.from.id..".txt", "r")
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -217,7 +217,7 @@ local function callback_res(extra, success, result)
 		usertype = "-----"
 	end
         --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./rank/"..msg.from.id..".txt", "r")
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -325,7 +325,7 @@ local function callback_info(extra, success, result)
 		usertype = "-----"
 	end
         --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./rank/"..msg.from.id..".txt", "r")
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -446,6 +446,46 @@ local function run(msg, matches)
 			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
 		end
 	else
+        --info ------------------------------------------------------------------------------------------------
+	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
+	.."First name: "..(result.first_name or "-----").."\n"
+	.."Last name: "..(result.last_name or "-----").."\n\n"
+	.."Phone number: "..number.."\n"
+	.."Username: @"..(result.username or "-----").."\n"
+	.."ID: "..result.id.."\n\n"
+        .."Global Rank "..usergrank.."\n"
+	.."Rank: "..usertype.."\n"
+	.."Position: "..userrank.."\n\n"
+	send_large_msg(org_chat_id, info)
+end
+
+local function run(msg, matches)
+	local data = load_data(_config.moderation.data)
+	org_chat_id = "chat#id"..msg.to.id
+	if is_sudo(msg) then
+		access = 1
+	else
+		access = 0
+	end
+	if matches[1] == '/ginfodel' and is_sudo(msg) then
+		azlemagham = io.popen('rm ./ginfo/'..matches[2]..'.txt'):read('*all')
+		return 'done'
+	elseif matches[1] == '/ginfo' and is_sudo(msg) then
+		local name = string.sub(matches[2], 1, 50)
+		local text = string.sub(matches[3], 1, 10000000000)
+		local file = io.open("./ginfo/"..name..".txt", "w")
+		file:write(text)
+		file:flush()
+		file:close() 
+		return "done"
+	elseif #matches == 2 then
+		local cbres_extra = {chatid = msg.to.id}
+		if string.match(matches[2], '^%d+$') then
+			return user_info('user#id'..matches[2], callback_info, cbres_extra)
+		else
+			return res_user(matches[2]:gsub("@",""), callback_res, cbres_extra)
+		end
+	else
 		--custom rank ------------------------------------------------------------------------------------------------
 		local file = io.open("./info/"..msg.from.id..".txt", "r")
 		if file ~= nil then
@@ -454,7 +494,7 @@ local function run(msg, matches)
 			usertype = "-----"
 		end
                 --custom grank ------------------------------------------------------------------------------------------------
-		local file = io.open("./rank/"..msg.from.id..".txt", "r")
+		local file = io.open("./ginfo/"..msg.from.id..".txt", "r")
 		if file ~= nil then
 			usergrank = file:read("*all")
 		else
@@ -555,8 +595,9 @@ return {
 		},
 	patterns = {
 		"^(/infodel) (.*)$",
+                "^(/ginfodel) (.*)$",
 		"^(/info) ([^%s]+) (.*)$",
-                "^(/rank) ([^%s]+) (.*)$",
+                "^(/ginfo) ([^%s]+) (.*)$",
 		"^([Ii]nfo) (.*)$",
 		"^(info)$",
 		"^(Info)$",
