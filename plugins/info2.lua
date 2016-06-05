@@ -430,7 +430,7 @@ local function run(msg, matches)
 	if matches[1] == '/infodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
 		return 'done'
-	elseif matches[1] == '/info' and is_sudo(msg) then
+	elseif matches[1] == '/info' or '/ginfo and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
 		local file = io.open("./info/"..name..".txt", "w")
@@ -447,7 +447,19 @@ local function run(msg, matches)
 		end
 	else
         --ginfo ------------------------------------------------------------------------------------------------
-	local function run(msg, matches)
+	ginfo = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
+	.."First name: "..(result.first_name or "-----").."\n"
+	.."Last name: "..(result.last_name or "-----").."\n\n"
+	.."Phone number: "..number.."\n"
+	.."Username: @"..(result.username or "-----").."\n"
+	.."ID: "..result.id.."\n\n"
+        .."Global Rank "..usergrank.."\n"
+	.."Rank: "..usertype.."\n"
+	.."Position: "..userrank.."\n\n"
+	send_large_msg(org_chat_id, info)
+end
+
+local function run(msg, matches)
 	local data = load_data(_config.moderation.data)
 	org_chat_id = "chat#id"..msg.to.id
 	if is_sudo(msg) then
@@ -458,7 +470,7 @@ local function run(msg, matches)
 	if matches[1] == '/ginfodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./ginfo/'..matches[2]..'.txt'):read('*all')
 		return 'done'
-	elseif matches[1] == '/ginfo' and is_sudo(msg) then
+	elseif matches[1] == '/ginfo' or '/info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
 		local file = io.open("./ginfo/"..name..".txt", "w")
