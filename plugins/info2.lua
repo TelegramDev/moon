@@ -418,7 +418,7 @@ local function callback_info(extra, success, result)
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
-end
+
 local function run(msg, matches)
 	local data = load_data(_config.moderation.data)
 	org_chat_id = "chat#id"..msg.to.id
@@ -447,7 +447,7 @@ local function run(msg, matches)
 		end
 	else
         --ginfo ------------------------------------------------------------------------------------------------
-	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
+	ginfo = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
 	.."First name: "..(result.first_name or "-----").."\n"
 	.."Last name: "..(result.last_name or "-----").."\n\n"
 	.."Phone number: "..number.."\n"
