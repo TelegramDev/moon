@@ -458,7 +458,7 @@ local function run(msg, matches)
 	.."Position: "..userrank.."\n\n"
 	send_large_msg(org_chat_id, info)
 end
-
+end
 local function run(msg, matches)
 	local data = load_data(_config.moderation.data)
 	org_chat_id = "chat#id"..msg.to.id
