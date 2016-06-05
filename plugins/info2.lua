@@ -430,7 +430,7 @@ local function run(msg, matches)
 	if matches[1] == '/infodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
 		return 'done'
-	elseif matches[1] == '/info' or '/ginfo and is_sudo(msg) then
+	elseif matches[1] == '/info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
 		local file = io.open("./info/"..name..".txt", "w")
@@ -470,7 +470,7 @@ local function run(msg, matches)
 	if matches[1] == '/ginfodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./ginfo/'..matches[2]..'.txt'):read('*all')
 		return 'done'
-	elseif matches[1] == '/ginfo' or '/info' and is_sudo(msg) then
+	elseif matches[1] == '/ginfo' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
 		local file = io.open("./ginfo/"..name..".txt", "w")
