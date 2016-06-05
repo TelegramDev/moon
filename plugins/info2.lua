@@ -408,13 +408,6 @@ local function callback_info(extra, success, result)
 	else
 		lastname = "-----"
 	end
-        --date ------------------------------------------------------------------------------------------------
-        function run(msg, matches)
-        local url , res = http.request('http://api.gpmod.ir/time/')
-        local jdat = json:decode(url)
-        local text = jdat.FAdate
-        return (text, ok_cb, false)
-        end
 	--info ------------------------------------------------------------------------------------------------
 	info = "Full name: "..string.gsub(result.print_name, "_", " ").."\n"
 	.."First name: "..(result.first_name or "-----").."\n"
@@ -540,7 +533,7 @@ local function run(msg, matches)
 					.."Interface: "..hardware.."\n"
 					.."Total messages: "..user_info.msgs.."\n\n"
 					.."Group name: "..string.gsub(msg.to.print_name, "_", " ").."\n"
-					.."Group ID: "..msg.to.id.."\n\nT E L E M O O N"
+					.."Group ID: "..msg.to.id.."\n\nT E L E 🌙 M O O N"
 			return info
 		else
 			get_message(msg.reply_id, callback_reply, false)
